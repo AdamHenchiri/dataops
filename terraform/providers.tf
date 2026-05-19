@@ -10,7 +10,8 @@ terraform {
 }
 
 provider "snowflake" {
-  full_account      = var.snowflake_full_account
+  organization_name = split("-", var.snowflake_full_account)[0]
+  account_name      = split("-", var.snowflake_full_account)[1]
   user              = var.snowflake_user
   password          = var.snowflake_password
 }
