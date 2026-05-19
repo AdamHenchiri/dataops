@@ -29,23 +29,27 @@ validate:
   stage: validate
   script:
     - terraform validate
-    - terraform plan
   only:
     - main
 
 # Génère un plan à chaque commit : permet de voir les changements prévus
 plan:
+  stage: plan
   script:
     - terraform plan -out "planfile"
+  dependencies:
+    - validate
   artifacts:
     paths:
-      - planfile
+      - terraform/planfile
 
 # Ne se lance que sur clic manuel : évite les apply accidentels
 apply:
   stage: deploy
   script:
-    - terraform apply -input=false "planfile"
+    - terraform apply -input=false "./planfile"
+  dependencies:
+    - plan
   only:
     - main
   when: manual 
