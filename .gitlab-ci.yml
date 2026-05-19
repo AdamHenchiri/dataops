@@ -12,8 +12,7 @@ before_script:
   - cd terraform
 
   # Passe les variables GitLab à Terraform
-  - export TF_VAR_snowflake_organization=$SNOWFLAKE_ORGANIZATION
-  - export TF_VAR_snowflake_account=$SNOWFLAKE_ACCOUNT
+  - export TF_VAR_snowflake_full_account=$SNOWFLAKE_FULL_ACCOUNT
   - export TF_VAR_snowflake_user=$SNOWFLAKE_USER
   - export TF_VAR_snowflake_password=$SNOWFLAKE_PASSWORD
   - export TF_VAR_dev_user_password=$DEV_USER_PASSWORD

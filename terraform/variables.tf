@@ -1,8 +1,4 @@
-variable "snowflake_organization" {
-  description = "Nom de l'organisation Snowflake"
-}
-
-variable "snowflake_account" {
+variable "snowflake_full_account" {
   description = "Nom du compte Snowflake"
 }
 

@@ -1,5 +1,3 @@
-# outputs.tf
-
 output "warehouses" {
   description = "Noms des warehouses créés par environnement"
   value = {
@@ -37,7 +35,7 @@ output "dbt_connection_info" {
   sensitive   = true
   value = {
     for env in var.environments : env => {
-      account   = "${var.snowflake_organization}-${var.snowflake_account}"
+      account   = "${var.snowflake_full_account}"
       user      = snowflake_user.env_user[env].name
       role      = snowflake_account_role.env_role[env].name
       database  = snowflake_database.env_database[env].name
