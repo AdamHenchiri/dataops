@@ -1,0 +1,46 @@
+image: hashicorp/terraform:latest
+
+variables:
+  TF_ADDRESS: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/main"
+
+default:
+  working_directory: terraform 
+  
+before_script:
+  # Passe les variables GitLab à Terraform
+  - export TF_VAR_snowflake_organization=$SNOWFLAKE_ORGANIZATION
+  - export TF_VAR_snowflake_account=$SNOWFLAKE_ACCOUNT
+  - export TF_VAR_snowflake_user=$SNOWFLAKE_USER
+  - export TF_VAR_snowflake_password=$SNOWFLAKE_PASSWORD
+
+  # Init avec le backend GitLab
+  - terraform init
+      -backend-config="address=${TF_ADDRESS}"
+      -backend-config="lock_address=${TF_ADDRESS}/lock"
+      -backend-config="unlock_address=${TF_ADDRESS}/lock"
+      -backend-config="username=gitlab-ci-token"
+      -backend-config="password=${CI_JOB_TOKEN}"
+      -backend-config="lock_method=POST"
+      -backend-config="unlock_method=DELETE"
+
+stages:
+  - validate
+  - deploy
+
+# Tourne à chaque commit : vérifie que le code est valide
+validate:
+  stage: validate
+  script:
+    - terraform validate
+    - terraform plan
+  only:
+    - main
+
+# Ne se lance que sur clic manuel : évite les apply accidentels
+apply:
+  stage: deploy
+  script:
+    - terraform apply -auto-approve
+  only:
+    - main
+  when: manual 
