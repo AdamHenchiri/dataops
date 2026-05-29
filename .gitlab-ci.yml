@@ -53,7 +53,12 @@ plan:
 apply:
   stage: deploy
   script:
-    - env | grep TF_HTTP
+    - pwd
+    - ls -la
+    - ls -la terraform || true
+    - ls -la .
+    - terraform show planfile
+    - terraform state list
     - terraform apply -input=false "./planfile"
   dependencies:
     - plan
