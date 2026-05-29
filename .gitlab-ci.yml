@@ -53,13 +53,8 @@ plan:
 apply:
   stage: deploy
   script:
-    - pwd
-    - ls -la
-    - ls -la terraform || true
-    - ls -la .
-    - terraform show planfile
-    - terraform state list
-    - terraform apply -input=false "./planfile"
+    - terraform plan -out testplan
+    - terraform apply -input=false testplan
   dependencies:
     - plan
   only:
