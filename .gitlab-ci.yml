@@ -53,6 +53,7 @@ plan:
 apply:
   stage: deploy
   script:
+    - env | grep TF_HTTP
     - terraform apply -input=false "./planfile"
   dependencies:
     - plan
