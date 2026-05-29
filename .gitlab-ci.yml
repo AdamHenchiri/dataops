@@ -20,7 +20,8 @@ before_script:
   - export TF_VAR_dev_user_password=$DEV_USER_PASSWORD
   - export TF_VAR_rec_user_password=$REC_USER_PASSWORD
   - export TF_VAR_prod_user_password=$PROD_USER_PASSWORD
-
+  - export TF_HTTP_USERNAME="gitlab-ci-token"
+  - export TF_HTTP_PASSWORD="${CI_JOB_TOKEN}"
   # Init avec le backend GitLab
   - terraform init -backend-config="address=${TF_ADDRESS}" -backend-config="lock_address=${TF_ADDRESS}/lock" -backend-config="unlock_address=${TF_ADDRESS}/lock" -backend-config="username=gitlab-ci-token" -backend-config="password=${CI_JOB_TOKEN}" -backend-config="lock_method=POST" -backend-config="unlock_method=DELETE"
 
