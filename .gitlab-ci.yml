@@ -50,6 +50,9 @@ plan:
 apply:
   stage: deploy
   script:
+    - export TF_HTTP_USERNAME="gitlab-ci-token"
+    - export TF_HTTP_PASSWORD="${CI_JOB_TOKEN}"
+    - terraform init
     - terraform apply -input=false "./planfile"
   dependencies:
     - plan
