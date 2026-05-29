@@ -42,21 +42,17 @@ validate:
 plan:
   stage: plan
   script:
-    - terraform plan -out "planfile"
+    - terraform plan
   dependencies:
     - validate
-  artifacts:
-    paths:
-      - terraform/planfile
+  only:
+    - main
 
 # Ne se lance que sur clic manuel : évite les apply accidentels
 apply:
   stage: deploy
   script:
-    - terraform plan -out testplan
-    - terraform apply -input=false testplan
-  dependencies:
-    - plan
+    - terraform apply -auto-approve
   only:
     - main
   when: manual 
