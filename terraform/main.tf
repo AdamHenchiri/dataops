@@ -31,7 +31,9 @@ locals {
 resource "snowflake_user" "env_user" {
   for_each          = toset(var.environments)
   name              = "USER_${upper(each.key)}"
-  password          = local.user_passwords[each.key]
+  password          = each.key == "dev"  ? var.dev_user_password  :
+                      each.key == "rec"  ? var.rec_user_password  :
+                      var.prod_user_password 
   default_role      = snowflake_account_role.env_role[each.key].name
   default_warehouse = snowflake_warehouse.env_warehouse[each.key].name
   must_change_password = false
